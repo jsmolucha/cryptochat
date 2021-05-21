@@ -1,5 +1,4 @@
 import React, { useRef, useState } from 'react'
-import './App.css';
 
 //firebase init
 import firebase from 'firebase/app'
