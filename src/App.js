@@ -50,8 +50,34 @@ function SignIn() {
     auth.signInWithPopup(provider);
   }
 
+  //the github provider address
+  var provider = new firebase.auth.GithubAuthProvider();
+
+  //github authentication
+  function githubSignin() {
+    firebase.auth().signInWithPopup(provider)
+    
+    .then(function(result) {
+       var token = result.credential.accessToken;
+       var user = result.user;
+     
+       console.log(token)
+       console.log(user)
+    }).catch(function(error) {
+       var errorCode = error.code;
+       var errorMessage = error.message;
+     
+       console.log(error.code)
+       console.log(error.message)
+    });
+ }
+
   return (
-    <button onClick={signInWithGoogle}> Sign in with google</button>
+    <div>
+      <button onClick={signInWithGoogle}> Sign in with google</button>
+      <button onClick={githubSignin} > Sign in with github</button>
+    </div>
+    
   )
 }
 
