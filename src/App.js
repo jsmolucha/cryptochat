@@ -87,9 +87,38 @@ function SignOut() {
   )
 }
 
-//add drop down with the diff chat rooms
-//drop down will have a value
-//insert that value into
+function randUserId() {
+//this function will randomise the user id and will display it to increase anonimoty
+
+}
+
+//array of possible random colors to get
+
+
+function randUserColor() {
+//this function will set the users color to random to differentiate chats
+//progress: currently makes a random color for every single message. We want this on a user to user basis.
+//still kinda crude b/c its manual BUT it works well for the time being, plus colors are very bad.. not coherent at ALL.
+
+var chatcolors = [
+  '#C0C0C0',
+  '#808080',
+  '#000000',
+  '#FF0000',
+  '#800000',
+  '#FFFF00',
+  '#00FF00',
+  '#008000',
+  '#00FFFF',
+  '#008080'
+]
+
+var number = Math.floor(Math.random() * 10)
+var color = chatcolors[number]
+return color;
+
+}
+
 function ChatRoom() {
   const dummy = useRef()
   //                                        ' here '
@@ -121,8 +150,9 @@ function ChatRoom() {
 
     <form onSubmit={sendMessage}>
 
-      <input value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="say something nice"/>
+      <input value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="Send message"/>
       <button type="submit">Submit</button>
+  
     </form>
     </>
   )
@@ -134,10 +164,27 @@ function ChatMessage(props) {
   const messageClass = uid === auth.currentUser.uid ? 'sent' : 'recieved'
   return(
     <div className={`message ${messageClass}`}>
-          <p>{uid}</p>
-          <p>{text}</p>
+          <p style={{backgroundColor: `${randUserColor()}`}} >{uid}</p>
+          <p >{text}</p>
 
     </div>
   )
 }
+
+//this is strictly just for testing the recieving user information.
+//currently works and returns the info of the current use to the console when called.
+function userinfotest() {
+  var user = firebase.auth().currentUser;
+
+  if (user != null) {
+    user.providerData.forEach(function (profile) {
+      console.log("Sign-in provider: " + profile.providerId);
+      console.log("Provider-specific UID: " + profile.uid);
+      console.log("Name: " + profile.displayName);
+      console.log("Email: " + profile.email);
+      console.log("Photo URL: " + profile.photoURL);
+    });
+  }
+}
+
 export default App;
