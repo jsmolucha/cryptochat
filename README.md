@@ -1,7 +1,7 @@
-##cryptochat
+## cryptochat
 Cryptochat is a React web application that allows you to chat with other people under an alias in a live chat about everything crypto. 
 
-##File Structure
+## File Structure
 ```
 📦gart-app
 ┣ 📂node_modules
