@@ -18,7 +18,6 @@ if (firebase.apps.length === 0) {
     storageBucket: "cryptochat-913b6.appspot.com",
     messagingSenderId: "1020396926070",
     appId: "1:1020396926070:web:385932d1345bb712b79b57"
-  
   })
 }
 
@@ -55,7 +54,6 @@ function SignIn() {
   //github authentication
   function githubSignin() {
     firebase.auth().signInWithPopup(provider)
-    
     .then(function(result) {
        var token = result.credential.accessToken;
        var user = result.user;
@@ -66,8 +64,8 @@ function SignIn() {
        var errorCode = error.code;
        var errorMessage = error.message;
      
-       console.log(error.code)
-       console.log(error.message)
+       console.log(errorCode)
+       console.log(errorMessage)
     });
  }
 
@@ -88,10 +86,10 @@ function SignOut() {
     
   )
 }
+
 //add drop down with the diff chat rooms
 //drop down will have a value
 //insert that value into
-
 function ChatRoom() {
   const dummy = useRef()
   //                                        ' here '
@@ -102,19 +100,18 @@ function ChatRoom() {
   const [formValue, setFormValue] = useState('')
 
   const sendMessage = async(e) => {
-
     e.preventDefault();
     const {uid} = auth.currentUser;
     await messagesRef.add({
       text: formValue,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       uid
-
     });
 
     setFormValue('')
     dummy.current.scrollIntoView({behavior: 'smooth'})
   }
+  
   return (
     <>
     <main>
