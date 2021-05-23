@@ -1,5 +1,4 @@
 import React, { useRef, useState } from 'react'
-import Config from './config/config'
 //firebase init
 import firebase from 'firebase/app'
 import 'firebase/firestore'
@@ -78,7 +77,6 @@ function SignIn() {
       <button onClick={signInWithGoogle}> Sign in with google</button>
       <button onClick={githubSignin} > Sign in with github</button>
     </div>
-    
   )
 }
 
@@ -87,9 +85,9 @@ function SignOut() {
     <div>
       <button onClick={() => auth.signOut()}> Sign out</button>
     </div>
-    
   )
 }
+
 function writeUserData() {
 //this function will write the user data to the FBDB
 
@@ -97,11 +95,14 @@ function writeUserData() {
 
 function randUserId() {
 //this function will randomise the user id and will display it to increase anonimoty
+const {uid} = auth.currentUser;
+let re = new RegExp(/^.{5}/, {uid})
+
+return re
 
 }
 
 //array of possible random colors to get
-
 
 function randUserColor() {
 //this function will set the users color to random to differentiate chats
