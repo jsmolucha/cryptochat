@@ -3,7 +3,7 @@ Cryptochat is a React web application that allows you to chat with other people 
 
 ## File Structure
 ```
-📦gart-app
+📦cryptochat
 ┣ 📂node_modules
 ┣ 📂public
 ┣ 📂src
