@@ -1,9 +1,10 @@
 import React, { useRef, useState } from 'react'
-
+import Config from './config/config'
 //firebase init
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 import 'firebase/auth'
+import 'firebase/database'
 
 //firebase hooks for user state and authentication
 import {useAuthState} from 'react-firebase-hooks/auth'
@@ -17,12 +18,15 @@ if (firebase.apps.length === 0) {
     projectId: "cryptochat-913b6",
     storageBucket: "cryptochat-913b6.appspot.com",
     messagingSenderId: "1020396926070",
-    appId: "1:1020396926070:web:385932d1345bb712b79b57"
+    appId: "1:1020396926070:web:385932d1345bb712b79b57",
+    measurementId: "G-8TZ4YR5ZCN"
+    //added measurement ID for analytical storage purposes.
   })
 }
 
 const auth = firebase.auth();
 const firestore = firebase.firestore();
+const database = firebase.database();
 
 
 function App() {
@@ -85,6 +89,10 @@ function SignOut() {
     </div>
     
   )
+}
+function writeUserData() {
+//this function will write the user data to the FBDB
+
 }
 
 function randUserId() {
