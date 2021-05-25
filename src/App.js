@@ -116,16 +116,8 @@ return color;
 
 }
 
-/* function updateUserinfo() {
-  const currentUser = firebase.auth().currentUser;
-  const uid  = currentUser.uid
-  const userData = {lastLoginTime: new Date()}
-  console.log('You are user: ' + uid + ' and chat color of: ')
-  firebase.firestore().doc(`/users/${uid}`).set(userData, {merge: true});
-
-}
- */
 function ChatRoom() {
+  //making a dummy div to reference in order to keep scrolling towards the bottom ALWAYS
   const dummy = useRef()
   //                                        ' here '
   //this will switch chatrooms effectively
@@ -153,6 +145,7 @@ function ChatRoom() {
     dummy.current.scrollIntoView({behavior: 'smooth'})
   }
 
+  //takes the input and sends the field data into the database.
   const modifychatcolor = async(e) => {
     e.preventDefault();
     const currentUser = firebase.auth().currentUser;
@@ -162,7 +155,6 @@ function ChatRoom() {
     console.log(colorValue)
   }
 
-  
   return (
     <>
     <main>
@@ -188,13 +180,29 @@ function ChatMessage(props) {
   const { text, uid} = props.message;
   //checks to see if the message was sent or recieved from the user
   const messageClass = uid === auth.currentUser.uid ? 'sent' : 'recieved'
+
+  
+  
   //okedoke big to do because now we gotta get that color form the DB and set a live listener on that user
   return(
     <div className={`message ${messageClass}`}>
-          <p style={{color: `${randUserColor()}`}} >{uid}</p>
+          <p style={{color:`${randUserColor()}`}} >{uid}</p>
           <p >{text}</p>
     </div>
   )
+}
+//getting the color from the DB and converting it into a dataset that CSS can read.
+function getColor() {
+  const currentUser = firebase.auth().currentUser;
+  const uid  = currentUser.uid
+  firestore.collection('users').doc(`${uid}`)
+    .onSnapshot((doc) =>  {
+      var dataextracted = doc.data().chatColor
+      console.log(dataextracted)
+      var dataconverted = '"' + dataextracted + '"'
+      console.log(dataconverted)
+      return dataconverted
+    })
 }
 
 //this is strictly just for testing the recieving user information.
