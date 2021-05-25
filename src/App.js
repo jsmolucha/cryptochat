@@ -1,9 +1,9 @@
 import React, { useRef, useState } from 'react'
+
 //firebase init
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 import 'firebase/auth'
-import 'firebase/database'
 
 //firebase hooks for user state and authentication
 import {useAuthState} from 'react-firebase-hooks/auth'
@@ -19,13 +19,12 @@ if (firebase.apps.length === 0) {
     messagingSenderId: "1020396926070",
     appId: "1:1020396926070:web:385932d1345bb712b79b57",
     measurementId: "G-8TZ4YR5ZCN"
-    //added measurement ID for analytical storage purposes.
+    //added measurement ID for analytics data modeling..
   })
 }
 
 const auth = firebase.auth();
 const firestore = firebase.firestore();
-const database = firebase.database();
 
 
 function App() {
@@ -45,7 +44,6 @@ function App() {
 }
 
 function SignIn() {
-
   const signInWithGoogle = () => {
     const provider = new firebase.auth.GoogleAuthProvider();
     auth.signInWithPopup(provider);
@@ -77,6 +75,7 @@ function SignIn() {
       <button onClick={signInWithGoogle}> Sign in with google</button>
       <button onClick={githubSignin} > Sign in with github</button>
     </div>
+    
   )
 }
 
@@ -85,24 +84,13 @@ function SignOut() {
     <div>
       <button onClick={() => auth.signOut()}> Sign out</button>
     </div>
+    
   )
-}
-
-function writeUserData() {
-//this function will write the user data to the FBDB
-
 }
 
 function randUserId() {
 //this function will randomise the user id and will display it to increase anonimoty
-const {uid} = auth.currentUser;
-let re = new RegExp(/^.{5}/, {uid})
-
-return re
-
 }
-
-//array of possible random colors to get
 
 function randUserColor() {
 //this function will set the users color to random to differentiate chats
@@ -128,6 +116,15 @@ return color;
 
 }
 
+/* function updateUserinfo() {
+  const currentUser = firebase.auth().currentUser;
+  const uid  = currentUser.uid
+  const userData = {lastLoginTime: new Date()}
+  console.log('You are user: ' + uid + ' and chat color of: ')
+  firebase.firestore().doc(`/users/${uid}`).set(userData, {merge: true});
+
+}
+ */
 function ChatRoom() {
   const dummy = useRef()
   //                                        ' here '
@@ -136,19 +133,35 @@ function ChatRoom() {
   const query = messagesRef.orderBy('createdAt').limit(25)
   const [messages] = useCollectionData(query, {idField: 'id'})
   const [formValue, setFormValue] = useState('')
-
+  const [colorValue, setColorValue] = useState('')
+  
   const sendMessage = async(e) => {
     e.preventDefault();
     const {uid} = auth.currentUser;
-    await messagesRef.add({
-      text: formValue,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-      uid
-    });
+    //had to add statement to prevent spamming empty messages.
+    if (formValue === '') {
+      alert("Please type something first")
+    } else {
+      await messagesRef.add({
+        text: formValue,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        uid
+      });
+    }
 
     setFormValue('')
     dummy.current.scrollIntoView({behavior: 'smooth'})
   }
+
+  const modifychatcolor = async(e) => {
+    e.preventDefault();
+    const currentUser = firebase.auth().currentUser;
+    const uid  = currentUser.uid
+    const userColor = {chatColor: colorValue}
+    firebase.firestore().doc(`/users/${uid}`).set(userColor, {merge: true});
+    console.log(colorValue)
+  }
+
   
   return (
     <>
@@ -163,6 +176,10 @@ function ChatRoom() {
       <button type="submit">Submit</button>
   
     </form>
+    <form onSubmit={modifychatcolor}>
+      <input value={colorValue} onChange={(e) => setColorValue(e.target.value)} placeholder="type a chat color"/>
+      <button type='submit'>change color</button>
+    </form>
     </>
   )
 }
@@ -171,11 +188,11 @@ function ChatMessage(props) {
   const { text, uid} = props.message;
   //checks to see if the message was sent or recieved from the user
   const messageClass = uid === auth.currentUser.uid ? 'sent' : 'recieved'
+  //okedoke big to do because now we gotta get that color form the DB and set a live listener on that user
   return(
     <div className={`message ${messageClass}`}>
-          <p style={{backgroundColor: `${randUserColor()}`}} >{uid}</p>
+          <p style={{color: `${randUserColor()}`}} >{uid}</p>
           <p >{text}</p>
-
     </div>
   )
 }
