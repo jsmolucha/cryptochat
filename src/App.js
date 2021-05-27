@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, {useRef, useState } from 'react'
 
 //firebase init
 import firebase from 'firebase/app'
@@ -90,30 +90,19 @@ function SignOut() {
 
 function randUserId() {
 //this function will randomise the user id and will display it to increase anonimoty
+
 }
 
 function randUserColor() {
 //this function will set the users color to random to differentiate chats
 //progress: currently makes a random color for every single message. We want this on a user to user basis.
 //still kinda crude b/c its manual BUT it works well for the time being, plus colors are very bad.. not coherent at ALL.
-
-var chatcolors = [
-  '#C0C0C0',
-  '#808080',
-  '#000000',
-  '#FF0000',
-  '#800000',
-  '#FFFF00',
-  '#00FF00',
-  '#008000',
-  '#00FFFF',
-  '#008080'
-]
-
-var number = Math.floor(Math.random() * 10)
-var color = chatcolors[number]
-return color;
-
+var letters = '0123456789ABCDEF'
+var color = '#'
+for(var i=0; i < 6; i++) {
+  color += letters[Math.floor(Math.random() * 16)]
+}
+  return color
 }
 
 function ChatRoom() {
@@ -126,6 +115,9 @@ function ChatRoom() {
   const [messages] = useCollectionData(query, {idField: 'id'})
   const [formValue, setFormValue] = useState('')
   const [colorValue, setColorValue] = useState('')
+  const currentUser = firebase.auth().currentUser;
+  const uid  = currentUser.uid
+  const color = getColor()
   
   const sendMessage = async(e) => {
     e.preventDefault();
@@ -137,7 +129,7 @@ function ChatRoom() {
       await messagesRef.add({
         text: formValue,
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        uid
+        uid,
       });
     }
 
@@ -148,9 +140,7 @@ function ChatRoom() {
   //takes the input and sends the field data into the database.
   const modifychatcolor = async(e) => {
     e.preventDefault();
-    const currentUser = firebase.auth().currentUser;
-    const uid  = currentUser.uid
-    const userColor = {chatColor: colorValue}
+    const userColor = {chatColor: randUserColor()}
     firebase.firestore().doc(`/users/${uid}`).set(userColor, {merge: true});
     console.log(colorValue)
   }
@@ -163,15 +153,15 @@ function ChatRoom() {
     </main>
 
     <form onSubmit={sendMessage}>
-
       <input value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="Send message"/>
       <button type="submit">Submit</button>
-  
     </form>
+
     <form onSubmit={modifychatcolor}>
-      <input value={colorValue} onChange={(e) => setColorValue(e.target.value)} placeholder="type a chat color"/>
       <button type='submit'>change color</button>
     </form>
+    <p>current user: {uid}</p>
+    <p>current chat color: {randUserColor()}</p>
     </>
   )
 }
@@ -180,17 +170,15 @@ function ChatMessage(props) {
   const { text, uid} = props.message;
   //checks to see if the message was sent or recieved from the user
   const messageClass = uid === auth.currentUser.uid ? 'sent' : 'recieved'
-
-  
-  
   //okedoke big to do because now we gotta get that color form the DB and set a live listener on that user
   return(
     <div className={`message ${messageClass}`}>
-          <p style={{color:`${randUserColor()}`}} >{uid}</p>
+          <p style={{color:`${randUserColor()}`}}>{uid}</p>
           <p >{text}</p>
     </div>
   )
 }
+
 //getting the color from the DB and converting it into a dataset that CSS can read.
 function getColor() {
   const currentUser = firebase.auth().currentUser;
@@ -199,26 +187,24 @@ function getColor() {
     .onSnapshot((doc) =>  {
       var dataextracted = doc.data().chatColor
       console.log(dataextracted)
-      var dataconverted = '"' + dataextracted + '"'
-      console.log(dataconverted)
-      return dataconverted
+      return dataextracted
     })
 }
 
-//this is strictly just for testing the recieving user information.
-//currently works and returns the info of the current use to the console when called.
-function userinfotest() {
-  var user = firebase.auth().currentUser;
+function getColor2() {
+  const currentUser = firebase.auth().currentUser;
+  const uid  = currentUser.uid
+  var docref = firebase.collection('users').doc(`${uid}`);
 
-  if (user != null) {
-    user.providerData.forEach(function (profile) {
-      console.log("Sign-in provider: " + profile.providerId);
-      console.log("Provider-specific UID: " + profile.uid);
-      console.log("Name: " + profile.displayName);
-      console.log("Email: " + profile.email);
-      console.log("Photo URL: " + profile.photoURL);
-    });
-  }
+  docref.get().then((doc) => {
+    if (doc.exists) {
+      console.log("doc data: ", doc.data());
+    } else {
+      console.log("no such documents")
+    }
+  }).catch((error) => {
+    console.log("error getting document", error)
+  });
+
 }
-
 export default App;
