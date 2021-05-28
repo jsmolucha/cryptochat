@@ -114,10 +114,9 @@ function ChatRoom() {
   const query = messagesRef.orderBy('createdAt').limit(25)
   const [messages] = useCollectionData(query, {idField: 'id'})
   const [formValue, setFormValue] = useState('')
-  const [colorValue, setColorValue] = useState('')
+  const [colorValue] = useState('')
   const currentUser = firebase.auth().currentUser;
   const uid  = currentUser.uid
-  const color = getColor()
   
   const sendMessage = async(e) => {
     e.preventDefault();
@@ -145,6 +144,7 @@ function ChatRoom() {
     console.log(colorValue)
   }
 
+
   return (
     <>
     <main>
@@ -157,7 +157,7 @@ function ChatRoom() {
       <button type="submit">Submit</button>
     </form>
 
-    <form onSubmit={modifychatcolor}>
+    <form onSubmit={modifychatcolor} onClick={getColor2}>
       <button type='submit'>change color</button>
     </form>
     <p>current user: {uid}</p>
@@ -186,6 +186,7 @@ function getColor() {
   firestore.collection('users').doc(`${uid}`)
     .onSnapshot((doc) =>  {
       var dataextracted = doc.data().chatColor
+      console.log('this is the color')
       console.log(dataextracted)
       return dataextracted
     })
@@ -194,17 +195,17 @@ function getColor() {
 function getColor2() {
   const currentUser = firebase.auth().currentUser;
   const uid  = currentUser.uid
-  var docref = firebase.collection('users').doc(`${uid}`);
 
-  docref.get().then((doc) => {
-    if (doc.exists) {
-      console.log("doc data: ", doc.data());
-    } else {
-      console.log("no such documents")
-    }
-  }).catch((error) => {
-    console.log("error getting document", error)
-  });
+  firestore.collection('users')
+    .get()
+    .then(snapshot => {
+      const users = []
+      snapshot.forEach(doc =>{
+        const data = doc.data
+        users.push(data)
+        console.log(data)
 
+      })
+    })
 }
 export default App;
