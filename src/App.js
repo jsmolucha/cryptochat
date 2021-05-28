@@ -55,9 +55,7 @@ function SignIn() {
     .then(function(result) {
        var token = result.credential.accessToken;
        var user = result.user;
-     
-       console.log(token)
-       console.log(user)
+
     }).catch(function(error) {
        var errorCode = error.code;
        var errorMessage = error.message;
@@ -106,18 +104,11 @@ function ChatRoom() {
   const query = messagesRef.orderBy('createdAt').limit(25)
   const [messages] = useCollectionData(query, {idField: 'id'})
   const [formValue, setFormValue] = useState('')
-<<<<<<< HEAD
-  const [colorValue] = useState('')
-  const currentUser = firebase.auth().currentUser;
-  const uid  = currentUser.uid
-  
-=======
   const currentUser = firebase.auth().currentUser;
   const uid = currentUser.uid
   const db = firebase.firestore()
   const colors  = db.collection('users')
 
->>>>>>> 6462a3c15c07df6ebff0c56dfdbe3b530ee3df43
   const sendMessage = async(e) => {
     e.preventDefault();
     const {uid} = auth.currentUser;
@@ -166,14 +157,8 @@ function ChatRoom() {
       <input value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="Send message"/>
       <button type="submit">Submit</button>
     </form>
-
-<<<<<<< HEAD
-    <form onSubmit={modifychatcolor} onClick={getColor2}>
-      <button type='submit'>change color</button>
-=======
     <form onSubmit={modifychatcolor}>
       <button type='submit' onClick={usercolor}>change color</button>
->>>>>>> 6462a3c15c07df6ebff0c56dfdbe3b530ee3df43
     </form>
     <p>current user: {uid}</p>
     </>
@@ -208,7 +193,6 @@ function getColor() {
     })
 }
 
-<<<<<<< HEAD
 function getColor2() {
   const currentUser = firebase.auth().currentUser;
   const uid  = currentUser.uid
@@ -225,6 +209,4 @@ function getColor2() {
       })
     })
 }
-=======
->>>>>>> 6462a3c15c07df6ebff0c56dfdbe3b530ee3df43
 export default App;
