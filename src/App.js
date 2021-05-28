@@ -1,4 +1,4 @@
-import React, {useRef, useState } from 'react'
+import React, {useRef, useState} from 'react'
 
 //firebase init
 import firebase from 'firebase/app'
@@ -26,11 +26,8 @@ if (firebase.apps.length === 0) {
 const auth = firebase.auth();
 const firestore = firebase.firestore();
 
-
 function App() {
-
   const [user] = useAuthState(auth);
-
   return (
     <div className="App">
       <header>
@@ -88,11 +85,6 @@ function SignOut() {
   )
 }
 
-function randUserId() {
-//this function will randomise the user id and will display it to increase anonimoty
-
-}
-
 function randUserColor() {
 //this function will set the users color to random to differentiate chats
 //progress: currently makes a random color for every single message. We want this on a user to user basis.
@@ -114,10 +106,18 @@ function ChatRoom() {
   const query = messagesRef.orderBy('createdAt').limit(25)
   const [messages] = useCollectionData(query, {idField: 'id'})
   const [formValue, setFormValue] = useState('')
+<<<<<<< HEAD
   const [colorValue] = useState('')
   const currentUser = firebase.auth().currentUser;
   const uid  = currentUser.uid
   
+=======
+  const currentUser = firebase.auth().currentUser;
+  const uid = currentUser.uid
+  const db = firebase.firestore()
+  const colors  = db.collection('users')
+
+>>>>>>> 6462a3c15c07df6ebff0c56dfdbe3b530ee3df43
   const sendMessage = async(e) => {
     e.preventDefault();
     const {uid} = auth.currentUser;
@@ -141,7 +141,17 @@ function ChatRoom() {
     e.preventDefault();
     const userColor = {chatColor: randUserColor()}
     firebase.firestore().doc(`/users/${uid}`).set(userColor, {merge: true});
-    console.log(colorValue)
+  }
+
+  //make an async function that fetches the color from the firestore db
+  const usercolor = async() => {
+    const doc = await colors.doc(`${uid}`).get();
+    if (doc.exists) {
+      console.log(doc.data().chatColor)
+      return doc.data().chatColor;
+    } else {
+      return 'color not found'
+    }
   }
 
 
@@ -157,19 +167,25 @@ function ChatRoom() {
       <button type="submit">Submit</button>
     </form>
 
+<<<<<<< HEAD
     <form onSubmit={modifychatcolor} onClick={getColor2}>
       <button type='submit'>change color</button>
+=======
+    <form onSubmit={modifychatcolor}>
+      <button type='submit' onClick={usercolor}>change color</button>
+>>>>>>> 6462a3c15c07df6ebff0c56dfdbe3b530ee3df43
     </form>
     <p>current user: {uid}</p>
-    <p>current chat color: {randUserColor()}</p>
     </>
   )
 }
 
 function ChatMessage(props) {
   const { text, uid} = props.message;
+
   //checks to see if the message was sent or recieved from the user
   const messageClass = uid === auth.currentUser.uid ? 'sent' : 'recieved'
+
   //okedoke big to do because now we gotta get that color form the DB and set a live listener on that user
   return(
     <div className={`message ${messageClass}`}>
@@ -192,6 +208,7 @@ function getColor() {
     })
 }
 
+<<<<<<< HEAD
 function getColor2() {
   const currentUser = firebase.auth().currentUser;
   const uid  = currentUser.uid
@@ -208,4 +225,6 @@ function getColor2() {
       })
     })
 }
+=======
+>>>>>>> 6462a3c15c07df6ebff0c56dfdbe3b530ee3df43
 export default App;
