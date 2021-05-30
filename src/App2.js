@@ -1,15 +1,9 @@
 import React, {useRef, useState} from 'react'
 import './app2.css'
-import {
-    BrowserRouter as Router,
-    Route,
-    NavLink,
-    Redirect,
-    useHistory
-} from 'react-router-dom'
 
 import firebase, {db,auth} from './services/firebase'
 import {useCollectionData} from 'react-firebase-hooks/firestore'
+
 //swithed to using classes because we want to be able to use states within our app.
 //props are data in components that dont change, states are data that do change.
 class App2 extends React.Component {
@@ -24,7 +18,9 @@ class App2 extends React.Component {
                     user: {
                         photoURL: user.photoURL,
                         email: user.email,
-                        displayName: user.displayName
+                        displayName: user.displayName,
+                        uid: user.uid,
+                        color: randUserColor()
                     }
                 })
             } else {
@@ -41,7 +37,8 @@ class App2 extends React.Component {
             this.setState({
                 user: {
                     photoURL: user.photoURL,
-                    displayName: user.displayName
+                    displayName: user.displayName,
+                    color: randUserColor()
                 }
             })
         }).catch(function(error){
@@ -50,7 +47,7 @@ class App2 extends React.Component {
 
     }
 
-    signInUser = () => {  
+    signInUserGoogle = () => {  
         const provider = new firebase.auth.GoogleAuthProvider();
         auth.signInWithPopup(provider)
         .then((result) => {
@@ -60,7 +57,9 @@ class App2 extends React.Component {
                 user: {
                     photoURL: user.photoURL,
                     email: user.email,
-                    displayName: user.displayName
+                    displayName: user.displayName,
+                    uid: user.uid,
+                    color: randUserColor()
                 }
             })
         }).catch(function(error){
@@ -73,51 +72,40 @@ class App2 extends React.Component {
 
     }
 
+// reformat structure to have just the homepage and then the dynamically rendered page where if the user is logged in it renders chatrrom
+// and if theyre note logged in it renders the login page. Along with that, the signout button should be dynamic as well. 
+// Previously had routing but routing was unnecessary since all we are doing is logging in and rendering page based on auth status.
+
     render() {
         return (
             <div className='App'>
-            <Router>
-                <Route exact path='/' component={Home} />
-                <Route path='/login' render={() => (!this.state.user ? <LogIn signin={this.signInUser} signin2={this.signInUserGit} /> :
-                    <Redirect to='/chatroom'/> )} />
-                <Route path='/chatroom' component={ChatRoom}/>
-                <Nav signout={this.signOutUser} user={this.state.user}/>
-            </Router>
-{/* 
-            {
-                this.state.user &&
-            <div>
-                <h2>{this.state.user.displayName}</h2>
-                <img src={this.state.user.photoURL}></img>
-            </div>
-            } */}
+                <section>
+                    {this.state.user ? <ChatRoom /> : <LogIn signin={this.signInUserGoogle} signin2={this.signInUserGit}/>}
+                </section>
+                <footer>
+                    <Signout signout={this.signOutUser} user={this.state.user}/>
+                </footer>
+                {
+                    this.state.user &&
+                <div>
+                    <p>Currently logged in as: {this.state.user.displayName}</p>
+                    <p>UID: {this.state.user.uid}</p>
+                    <img src={this.state.user.photoURL} alt=''></img>
+                </div>
+                }
         </div>
         )
     }
 }
 
-function Nav(props) {
-    return(
+function Signout(props) {
+    return auth.currentUser && (
         <div>
-            <button>
-                <NavLink to='/'>Home</NavLink>
-            </button>
-            {
-                props.user &&
-                <button onClick={props.signout} >
-                <NavLink to='/'>signout</NavLink>
-                </button>
-
-            }
-            {
-                !props.user &&
-                <button>
-                <NavLink to='/login'>login</NavLink>
-                </button>
-            }
+          <button onClick={props.signout}> Sign out</button>
         </div>
-    )
+      )
 }
+
 function LogIn(props) {
     return(
         <div>
@@ -125,12 +113,6 @@ function LogIn(props) {
             <button onClick={props.signin}>Google Sign In</button>
             <button onClick={props.signin2}>GitHub Sign In</button>
         </div>
-    )
-}
-
-function Home() {
-    return(
-        <h1>cryptochat</h1>
     )
 }
 
@@ -196,12 +178,12 @@ function ChatMessage(props) {
   
     //checks to see if the message was sent or recieved from the user
     const messageClass = uid === auth.currentUser.uid ? 'sent' : 'recieved'
-  
+    const {color} = this.user.color
     //okedoke big to do because now we gotta get that color form the DB and set a live listener on that user
     return(
       <div className={`message ${messageClass}`}>
-            <p style={{color:`${randUserColor()}`}}>{uid}: </p>
-            <p style={{color: "rgba(93, 114, 144)"}}>{text}</p>
+            <p style={{color:{color}}}>{uid}: </p>
+            <p style={{color: "rgba(255,255,255)"}}>{text}</p>
       </div>
     )
   }
