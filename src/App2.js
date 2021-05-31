@@ -20,7 +20,9 @@ class App2 extends React.Component {
                         email: user.email,
                         displayName: user.displayName,
                         uid: user.uid,
-                        color: randUserColor()
+                        color: randUserColor(),
+                        authprovider: user.providerData[0].providerId
+
                     }
                 })
             } else {
@@ -38,7 +40,9 @@ class App2 extends React.Component {
                 user: {
                     photoURL: user.photoURL,
                     displayName: user.displayName,
-                    color: randUserColor()
+                    color: randUserColor(),
+                    authprovider: user.providerData[0].providerId
+
                 }
             })
         }).catch(function(error){
@@ -59,6 +63,7 @@ class App2 extends React.Component {
                     email: user.email,
                     displayName: user.displayName,
                     uid: user.uid,
+                    authprovider: user.providerData[0].providerId,
                     color: randUserColor()
                 }
             })
@@ -88,8 +93,8 @@ class App2 extends React.Component {
                 {
                     this.state.user &&
                 <div>
-                    <p>Currently logged in as: {this.state.user.displayName}</p>
-                    <p>UID: {this.state.user.uid}</p>
+                    <p>Current UID: {this.state.user.uid}</p>
+                    <p>Authenticated with: {this.state.user.authprovider}</p>
                     <img src={this.state.user.photoURL} alt=''></img>
                 </div>
                 }
@@ -123,7 +128,6 @@ function ChatRoom(props) {
     const messagesRef = db.collection('messages')
     const query = messagesRef.orderBy('createdAt').limit(25)
     const [messages] = useCollectionData(query, {idField: 'id'})
-
     const [formValue, setFormValue] = useState('')
 
     const sendMessage = async(e) => {
@@ -137,7 +141,6 @@ function ChatRoom(props) {
           text: formValue,
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
           uid,
-
         });
       }
   
@@ -151,11 +154,9 @@ function ChatRoom(props) {
         {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
         <div ref={dummy}></div>
       </main>
-  
       <form onSubmit={sendMessage}>
         <input value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="Send message"/>
         <button type="submit">Submit</button>
-      
       </form>
     </div>
     )
@@ -164,7 +165,6 @@ function ChatRoom(props) {
 function randUserColor() {
     //this function will set the users color to random to differentiate chats
     //progress: currently makes a random color for every single message. We want this on a user to user basis.
-    //still kinda crude b/c its manual BUT it works well for the time being, plus colors are very bad.. not coherent at ALL.
     var letters = '0123456789ABCDEF'
     var color = '#'
     for(var i=0; i < 6; i++) {
@@ -174,18 +174,16 @@ function randUserColor() {
     }
 
 function ChatMessage(props) {
-    const {text, uid} = props.message;
-  
+    const {text, uid} = props.message;  
     //checks to see if the message was sent or recieved from the user
     const messageClass = uid === auth.currentUser.uid ? 'sent' : 'recieved'
-    const {color} = this.user.color
     //okedoke big to do because now we gotta get that color form the DB and set a live listener on that user
     return(
-      <div className={`message ${messageClass}`}>
-            <p style={{color:{color}}}>{uid}: </p>
+        <div className={`message${messageClass}`}>
+            <p style={{color:`${randUserColor()}`}}>{uid}: </p>
             <p style={{color: "rgba(255,255,255)"}}>{text}</p>
-      </div>
+        </div>
     )
-  }
+}
 
 export default App2;
