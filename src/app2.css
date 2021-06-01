@@ -1,7 +1,70 @@
-.messagesent {
-    color: aqua;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+body {
+    background-color: #151A21;
+}
+.login-page {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    width: 433px;
+    height: 415px;
+    border-radius: 15px;
+    font-family: 'Inter';
+    color: white;
+    background-color: #242C37;
 }
 
-.messagerecieved {
-    color: blueviolet;
+.terms  {
+    font-size: 15px;
+    color: #5D7290
 }
+
+.tandc {
+    font-size: 15px;
+    color: #4DDA6C;
+    font-weight: 600;
+    
+}
+
+.login-page h3 {
+    text-align: left;
+    margin-left: 35px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 64px;
+}
+
+.login-page button {
+    font-size: 20px;
+    font-weight: 400;
+    color: white;
+    padding-left: 20px;
+    text-align: left;
+    outline: none;
+    border: 2px solid transparent;
+    border-radius: 15px;
+    width: 360px;
+    height: 80px;
+    background-color: rgba(93, 114, 144, 0.5);
+}
+.login-page button:hover {
+    border: 2px solid #4DDA6C;
+}
+.google-auth {
+    margin: 20px;
+}
+
+.github-auth {
+    margin-bottom: 45px;
+}
+
+.messagesent, .messagerecieved {
+    display: flex;
+    flex-flow: row nowrap;
+    padding: 5px 0 5px 0;
+    margin: 5px 0px 5px 5px;
+}
+

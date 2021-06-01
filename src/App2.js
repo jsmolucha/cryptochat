@@ -30,6 +30,7 @@ class App2 extends React.Component {
             }
         })
     }
+
     signInUserGit = () => {
         const provider2 = new firebase.auth.GithubAuthProvider();
         auth.signInWithPopup(provider2)
@@ -106,10 +107,12 @@ function Signout(props) {
 
 function LogIn(props) {
     return(
-        <div>
-            <h3>Log In</h3>
-            <button onClick={props.signin}>Google Sign In</button>
-            <button onClick={props.signin2}>GitHub Sign In</button>
+        <div className='login-page'>
+            <h3>Log in</h3>
+            <button onClick={props.signin} className='google-auth'>Log in with Google</button>
+            <button onClick={props.signin2} className='github-auth'>Log in with Github</button>
+            <p className='terms'>By signing in, you are accepting our</p>
+            <p className='tandc'>Terms and Conditions.</p>
         </div>
     )
 }
@@ -151,8 +154,8 @@ function ChatRoom(props) {
         <input value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="Send message"/>
         <button type="submit">Submit</button>
       </form>
-        <p>Current UID: {props.uid}</p>
-        <p>Authenticated with: {props.authprovider}</p>
+        <p style={{color: "white"}}>Current UID: {props.uid}</p>
+        <p style={{color: "white"}}>Authenticated with: {props.authprovider}</p>
     </div>
     )
   }
