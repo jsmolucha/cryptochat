@@ -180,8 +180,8 @@ function ChatMessage(props) {
 
     return(
         <div className={`message${messageClass}`}>
-            <p style={{color:colorValue}}>{uid}: </p>
-            <p style={{color: "rgba(255,255,255)"}}>{text}</p>
+            <p className="chat-name" style={{color:colorValue}}>{uid}</p>
+            <p style={{color: "rgba(255,255,255)"}}>: {text}</p>
         </div>
     )
 }
