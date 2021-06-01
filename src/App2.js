@@ -85,20 +85,13 @@ class App2 extends React.Component {
         return (
             <div className='App'>
                 <section>
-                    {this.state.user ? <ChatRoom /> : <LogIn signin={this.signInUserGoogle} signin2={this.signInUserGit}/>}
+                    {this.state.user ? <ChatRoom uid={this.state.user.uid} authprovider={this.state.user.authprovider} /> : 
+                    <LogIn signin={this.signInUserGoogle} signin2={this.signInUserGit}/>}
                 </section>
                 <footer>
                     <Signout signout={this.signOutUser} user={this.state.user}/>
                 </footer>
-                {
-                    this.state.user &&
-                <div>
-                    <p>Current UID: {this.state.user.uid}</p>
-                    <p>Authenticated with: {this.state.user.authprovider}</p>
-                    <img src={this.state.user.photoURL} alt=''></img>
-                </div>
-                }
-        </div>
+            </div>
         )
     }
 }
@@ -133,7 +126,7 @@ function ChatRoom(props) {
     const sendMessage = async(e) => {
       e.preventDefault();
       const {uid} = auth.currentUser;
-      //had to add statement to prevent spamming empty messages.
+      //had to add filtering function to prevent submitting empty strings
       if (formValue === '') {
         alert("Please type something first")
       } else {
@@ -158,6 +151,8 @@ function ChatRoom(props) {
         <input value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="Send message"/>
         <button type="submit">Submit</button>
       </form>
+        <p>Current UID: {props.uid}</p>
+        <p>Authenticated with: {props.authprovider}</p>
     </div>
     )
   }
@@ -172,15 +167,17 @@ function randUserColor() {
     }
       return color
     }
-
+ 
 function ChatMessage(props) {
     const {text, uid} = props.message;  
+    const [colorValue] = useState(randUserColor());
+    
     //checks to see if the message was sent or recieved from the user
     const messageClass = uid === auth.currentUser.uid ? 'sent' : 'recieved'
-    //okedoke big to do because now we gotta get that color form the DB and set a live listener on that user
+
     return(
         <div className={`message${messageClass}`}>
-            <p style={{color:`${randUserColor()}`}}>{uid}: </p>
+            <p style={{color:colorValue}}>{uid}: </p>
             <p style={{color: "rgba(255,255,255)"}}>{text}</p>
         </div>
     )
