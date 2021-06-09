@@ -145,17 +145,26 @@ function ChatRoom(props) {
     }
 
     return (
-    <div style={{backgroundColor:"#242C37"}}>
-      <main>
+    <div >
+      <main className='chat-feed'>
         {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
-        <div ref={dummy}></div>
+        <span ref={dummy}></span>
       </main>
-      <form onSubmit={sendMessage}>
-        <input value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="Send message"/>
-        <button type="submit">Submit</button>
+      <form onSubmit={sendMessage} className='message-form'>
+        <input value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="Type a message" className='message-field'/>
+        <button type="submit" className='message-send'>Send</button>
       </form>
-        <p style={{color: "white"}}>Current UID: {props.uid}</p>
-        <p style={{color: "white"}}>Authenticated with: {props.authprovider}</p>
+      <div className='room-dropdown'>
+            <label for="rooms">Choose a chatroom: </label>
+                <select name="rooms" >
+                    <option value="bitcoin">BTC</option>
+                    <option value="doge">DOGE</option>
+                    <option value="eth">ETH</option>
+                </select>
+            <p style={{color: "white"}}>Current UID: {props.uid}</p>
+            <p style={{color: "white"}}>Authenticated with: {props.authprovider}</p>
+        </div>
+        
     </div>
     )
   }

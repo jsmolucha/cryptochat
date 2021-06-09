@@ -52,6 +52,7 @@ body {
 }
 .login-page button:hover {
     border: 2px solid #4DDA6C;
+    cursor: pointer;
 }
 .google-auth {
     margin: 20px;
@@ -73,3 +74,55 @@ body {
     
 }
 
+.chat-feed {
+    margin: 10px;
+    width: 30%;
+    height: 80vh;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    background-color: #242C37;
+    border-radius: 15px;
+}
+
+.chat-feed::-webkit-scrollbar {
+    width: 0.25rem;
+  }
+  
+  main::-webkit-scrollbar-track {
+    color: none;
+  }
+  
+  main::-webkit-scrollbar-thumb {
+    background: #4DDA6C;
+  }
+
+.message-field {
+    margin: 10px;
+    border: 2px solid transparent;
+    border-radius: 15px;
+    width: 25%;
+    height: 40px;
+    background-color: #242C37;
+    padding-left: 10px;
+    outline: none;
+    color: white;
+}
+
+.message-field::placeholder {
+    color: rgba(93, 114, 144, 0.5);
+}
+
+.message-send {
+    width: 3.5%;
+    border: 2px solid transparent;
+    border-radius: 15px;
+    height: 40px;
+    background-color: #242C37;
+    color: rgba(93, 114, 144, 0.5);
+    font-size: 18px;
+}
+
+.message-send:hover {
+    cursor: pointer;
+}
