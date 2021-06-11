@@ -120,12 +120,11 @@ function LogIn(props) {
 function ChatRoom(props) {
     //making a dummy div to reference in order to keep scrolling towards the bottom ALWAYS
     const dummy = useRef()
-
-  
-
+/* 
     const messagesRef = db.collection('messages')
     const query = messagesRef.orderBy('createdAt').limit(25)
-    const [messages] = useCollectionData(query, {idField: 'id'})
+    const [messages] = useCollectionData(query, {idField: 'id'}) */
+
     const [formValue, setFormValue] = useState('')
     const [currentRoom, setcurrentRoom] = useState('messages')
 
@@ -150,30 +149,41 @@ function ChatRoom(props) {
       setFormValue('')
       dummy.current.scrollIntoView({behavior: 'smooth'})
     }
+
+    function getMessageInfo() {
+        var info = db.collection(currentRoom).snapshotChanges().map(actions => {
+            return actions.map(a =>{
+                const data = a.payload.doc.data();
+                const id = a.payload.doc.id;
+                console.log(data, id)
+            })
+        })
+    }
+
     console.log(currentRoom)
     return (
     <div >
+        <div className='room-dropdown'>
+            <label for="rooms"></label>
+                <select name="rooms" value={currentRoom} onChange={(e) => setcurrentRoom(e.target.value)} className="drop-down-menu">
+                    <option value="messages">General</option>
+                    <option value="bitcoin">BTC</option>
+                    <option value="dogecoin">DOGE</option>
+                    <option value="etherium">ETH</option>
+                </select>
+        </div>
       <main className='chat-feed'>
-        {room && room.map(msg => <ChatMessage key={msg.id} message={msg} />)}
+        {room && room.map(msg => <ChatMessage key={msg.id} message={msg} chatRoom={chatRoom}  />)}
         <span ref={dummy}></span>
       </main>
       <form onSubmit={sendMessage} className='message-form'>
         <input value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="Type a message" className='message-field'/>
         <button type="submit" className='message-send'>Send</button>
       </form>
-      
-      <div className='room-dropdown'>
-            <label for="rooms">Choose a chatroom: </label>
-                <select name="rooms" value={currentRoom} onChange={(e) => setcurrentRoom(e.target.value)} >
-                    <option value="messages">General</option>
-                    <option value="bitcoin">BTC</option>
-                    <option value="doge">DOGE</option>
-                    <option value="eth">ETH</option>
-                </select>
-            <p style={{color: "white"}}>Current UID: {props.uid}</p>
-            <p style={{color: "white"}}>Authenticated with: {props.authprovider}</p>
-        </div>
-        
+      <div className='info-card'>
+        <p style={{color: "white"}}>Current UID: {props.uid}</p>
+        <p style={{color: "white"}}>Authenticated with: {props.authprovider}</p>
+      </div>
     </div>
     )
   }
@@ -188,7 +198,7 @@ function randUserColor() {
     }
       return color
     }
- 
+
 function ChatMessage(props) {
     const {text, uid} = props.message;  
     const [colorValue] = useState(randUserColor());
@@ -196,8 +206,9 @@ function ChatMessage(props) {
     //checks to see if the message was sent or recieved from the user
     const messageClass = uid === auth.currentUser.uid ? 'sent' : 'recieved'
 
+    
     return(
-        <div className={`message${messageClass}`}>
+        <div className={`message${messageClass}`} >
             <p className="chat-name" style={{color:colorValue}}>{uid}</p>
             <p style={{color: "rgba(255,255,255)"}}>: {text}</p>
         </div>

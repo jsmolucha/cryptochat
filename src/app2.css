@@ -66,27 +66,34 @@ body {
     display: flex;
     flex-flow: row nowrap;
     padding: 5px 0 5px 0;
-    margin: 5px 0px 5px 5px;
+    margin: 5px 5px 5px 8px;
+}
+.messagerecieved:hover, .messagesent:hover {
+    background-color: rgba(243, 243, 243, 0.13);
+    border-radius: 5px;
+    cursor: pointer;
 }
 
 .chat-name {
     font-weight: 600;
-    
 }
 
 .chat-feed {
-    margin: 10px;
+    margin:  0 10px 0 10px;
     width: 30%;
+    min-width: 570px;
     height: 80vh;
     overflow-y: scroll;
     display: flex;
     flex-direction: column;
     background-color: #242C37;
-    border-radius: 15px;
+    border-radius: 10px;
 }
 
 .chat-feed::-webkit-scrollbar {
     width: 0.25rem;
+    overflow: hidden;
+    
   }
   
   main::-webkit-scrollbar-track {
@@ -95,12 +102,14 @@ body {
   
   main::-webkit-scrollbar-thumb {
     background: #4DDA6C;
+    border-radius: 10px
   }
 
 .message-field {
     margin: 10px;
+    min-width: 480px;
     border: 2px solid transparent;
-    border-radius: 15px;
+    border-radius: 10px;
     width: 25%;
     height: 40px;
     background-color: #242C37;
@@ -114,15 +123,30 @@ body {
 }
 
 .message-send {
-    width: 3.5%;
+    width: 3.8%;
+    min-width: 63.188px;
     border: 2px solid transparent;
-    border-radius: 15px;
+    border-radius: 10px;
     height: 40px;
-    background-color: #242C37;
-    color: rgba(93, 114, 144, 0.5);
+    background-color: #4DDA6C;
+    color: white;
     font-size: 18px;
 }
 
 .message-send:hover {
     cursor: pointer;
 }
+
+.drop-down-menu {
+    margin: 5px 10px 10px 10px;
+    width: 30%;
+    min-width: 570px;
+    border: 2px solid transparent;
+    border-radius: 15px;
+    height: 40px;
+    background-color: #242C37;
+    padding-left: 10px;
+    outline: none;
+    color: white;
+
+} 
