@@ -121,10 +121,17 @@ function ChatRoom(props) {
     //making a dummy div to reference in order to keep scrolling towards the bottom ALWAYS
     const dummy = useRef()
 
+  
+
     const messagesRef = db.collection('messages')
     const query = messagesRef.orderBy('createdAt').limit(25)
     const [messages] = useCollectionData(query, {idField: 'id'})
     const [formValue, setFormValue] = useState('')
+    const [currentRoom, setcurrentRoom] = useState('messages')
+
+    const chatRoom = db.collection(currentRoom)
+    const customQuery = chatRoom.orderBy('createdAt').limit(25)
+    const [room] = useCollectionData(customQuery, {idField:'id'})
 
     const sendMessage = async(e) => {
       e.preventDefault();
@@ -133,7 +140,7 @@ function ChatRoom(props) {
       if (formValue === '') {
         alert("Please type something first")
       } else {
-        await messagesRef.add({
+        await chatRoom.add({
           text: formValue,
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
           uid,
@@ -143,20 +150,22 @@ function ChatRoom(props) {
       setFormValue('')
       dummy.current.scrollIntoView({behavior: 'smooth'})
     }
-
+    console.log(currentRoom)
     return (
     <div >
       <main className='chat-feed'>
-        {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
+        {room && room.map(msg => <ChatMessage key={msg.id} message={msg} />)}
         <span ref={dummy}></span>
       </main>
       <form onSubmit={sendMessage} className='message-form'>
         <input value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="Type a message" className='message-field'/>
         <button type="submit" className='message-send'>Send</button>
       </form>
+      
       <div className='room-dropdown'>
             <label for="rooms">Choose a chatroom: </label>
-                <select name="rooms" >
+                <select name="rooms" value={currentRoom} onChange={(e) => setcurrentRoom(e.target.value)} >
+                    <option value="messages">General</option>
                     <option value="bitcoin">BTC</option>
                     <option value="doge">DOGE</option>
                     <option value="eth">ETH</option>
