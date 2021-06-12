@@ -150,16 +150,6 @@ function ChatRoom(props) {
       dummy.current.scrollIntoView({behavior: 'smooth'})
     }
 
-    function getMessageInfo() {
-        var info = db.collection(currentRoom).snapshotChanges().map(actions => {
-            return actions.map(a =>{
-                const data = a.payload.doc.data();
-                const id = a.payload.doc.id;
-                console.log(data, id)
-            })
-        })
-    }
-
     console.log(currentRoom)
     return (
     <div >

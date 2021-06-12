@@ -114,12 +114,15 @@ body {
     height: 40px;
     background-color: #242C37;
     padding-left: 10px;
-    outline: none;
     color: white;
+    outline: none;
 }
 
 .message-field::placeholder {
     color: rgba(93, 114, 144, 0.5);
+}
+.message-field:focus {
+    border: 2px solid #4DDA6C;
 }
 
 .message-send {
@@ -135,6 +138,9 @@ body {
 
 .message-send:hover {
     cursor: pointer;
+    background-color: #349e4b;
+
+
 }
 
 .drop-down-menu {
