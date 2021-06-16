@@ -100,7 +100,7 @@ class App2 extends React.Component {
 function Signout(props) {
     return auth.currentUser && (
         <div>
-          <button onClick={props.signout}> Sign out</button>
+          <button className='signout' onClick={props.signout}> Sign out</button>
         </div>
       )
 }
@@ -127,6 +127,11 @@ function ChatRoom(props) {
 
     const [formValue, setFormValue] = useState('')
     const [currentRoom, setcurrentRoom] = useState('messages')
+    
+    /* 
+    const tsToMillis = firebase.firestore.Timestamp.now().toMillis();
+    const compareDate = new Date(tsToMillis - (24 * 60 * 60 * 1000)) 
+    */
 
     const chatRoom = db.collection(currentRoom)
     const customQuery = chatRoom.orderBy('createdAt').limit(25)
@@ -152,7 +157,7 @@ function ChatRoom(props) {
 
     console.log(currentRoom)
     return (
-    <div >
+    <div className="chat-room ">
         <div className='room-dropdown'>
             <label for="rooms"></label>
                 <select name="rooms" value={currentRoom} onChange={(e) => setcurrentRoom(e.target.value)} className="drop-down-menu">
@@ -162,17 +167,21 @@ function ChatRoom(props) {
                     <option value="etherium">ETH</option>
                 </select>
         </div>
-      <main className='chat-feed'>
-        {room && room.map(msg => <ChatMessage key={msg.id} message={msg} chatRoom={chatRoom}  />)}
-        <span ref={dummy}></span>
-      </main>
-      <form onSubmit={sendMessage} className='message-form'>
-        <input value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="Type a message" className='message-field'/>
-        <button type="submit" className='message-send'>Send</button>
-      </form>
-      <div className='info-card'>
-        <p style={{color: "white"}}>Current UID: {props.uid}</p>
-        <p style={{color: "white"}}>Authenticated with: {props.authprovider}</p>
+      <div className='chat-container'>
+        <main className='chat-feed'>
+            {room && room.map(msg => <ChatMessage key={msg.id} message={msg} chatRoom={chatRoom}  />)}
+            <span ref={dummy}></span>
+        </main>
+        <form onSubmit={sendMessage} className='message-form'>
+            <input value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="Type a message" className='message-field'/>
+            <button type="submit" className='message-send'>Send</button>
+        </form>
+      </div>
+      <div className='info-area'>
+        <div className='info-card'>
+            <p style={{color: "white"}}>Current UID: {props.uid}</p>
+            <p style={{color: "white"}}>Authenticated with: {props.authprovider}</p>
+        </div>
       </div>
     </div>
     )
