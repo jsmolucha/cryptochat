@@ -6,6 +6,7 @@ import {useCollectionData} from 'react-firebase-hooks/firestore'
 
 //swithed to using classes because we want to be able to use states within our app.
 //props are data in components that dont change, states are data that do change.
+
 class App2 extends React.Component {
     state = {
         user: null
@@ -118,7 +119,6 @@ function LogIn(props) {
 }
 
 function ChatRoom(props) {
-    //making a dummy div to reference in order to keep scrolling towards the bottom ALWAYS
     const dummy = useRef()
 /* 
     const messagesRef = db.collection('messages')
@@ -127,19 +127,15 @@ function ChatRoom(props) {
 
     const [formValue, setFormValue] = useState('')
     const [currentRoom, setcurrentRoom] = useState('messages')
-    
-    /* 
-    const tsToMillis = firebase.firestore.Timestamp.now().toMillis();
-    const compareDate = new Date(tsToMillis - (24 * 60 * 60 * 1000)) 
-    */
 
     const chatRoom = db.collection(currentRoom)
-    const customQuery = chatRoom.orderBy('createdAt').limit(25)
+    const customQuery = chatRoom.orderBy("createdAt").limitToLast(25)
     const [room] = useCollectionData(customQuery, {idField:'id'})
 
     const sendMessage = async(e) => {
       e.preventDefault();
       const {uid} = auth.currentUser;
+
       //had to add filtering function to prevent submitting empty strings
       if (formValue === '') {
         alert("Please type something first")
@@ -150,7 +146,7 @@ function ChatRoom(props) {
           uid,
         });
       }
-  
+
       setFormValue('')
       dummy.current.scrollIntoView({behavior: 'smooth'})
     }
@@ -181,6 +177,7 @@ function ChatRoom(props) {
         <div className='info-card'>
             <p style={{color: "white"}}>Current UID: {props.uid}</p>
             <p style={{color: "white"}}>Authenticated with: {props.authprovider}</p>
+            <p style={{color: "white"}}>Current Room: {currentRoom}</p>
         </div>
       </div>
     </div>
