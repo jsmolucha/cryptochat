@@ -90,7 +90,7 @@ class App2 extends React.Component {
                     {this.state.user ? <ChatRoom uid={this.state.user.uid} authprovider={this.state.user.authprovider} /> : 
                     <LogIn signin={this.signInUserGoogle} signin2={this.signInUserGit}/>}
                 </section>
-                <footer>
+                <footer className="signout-button">
                     <Signout signout={this.signOutUser} user={this.state.user}/>
                 </footer>
             </div>
@@ -129,7 +129,11 @@ function ChatRoom(props) {
     const [currentRoom, setcurrentRoom] = useState('messages')
 
     const chatRoom = db.collection(currentRoom)
+<<<<<<< Updated upstream
     const customQuery = chatRoom.orderBy("createdAt").limitToLast(25)
+=======
+    const customQuery = chatRoom.orderBy('createdAt').limit(75)
+>>>>>>> Stashed changes
     const [room] = useCollectionData(customQuery, {idField:'id'})
 
     const sendMessage = async(e) => {

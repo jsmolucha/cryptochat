@@ -104,6 +104,11 @@ body {
     background: #4DDA6C;
     border-radius: 10px
   }
+  
+.signout-button {
+    grid-area: signoutbutton;
+
+}
 
 .message-field {
     margin: 10px;
@@ -168,8 +173,8 @@ body {
     width: 100%;
     height: 100%;
     grid-template-areas: 
-    " dropdown infoarea"
-    " chat infoarea"
+    "dropdown infoarea"
+    "chat infoarea"
     "signout infoarea";
     grid-template-rows: auto;
     grid-template-columns: 1fr 3fr;
@@ -205,4 +210,12 @@ body {
     width: 30%;
     height: 20%;
     text-align: center;
+}
+
+@media screen and (max-height: 1000px) {
+    .chat-feed {
+        height: 75vh;
+
+    }
+    
 }
