@@ -129,11 +129,7 @@ function ChatRoom(props) {
     const [currentRoom, setcurrentRoom] = useState('messages')
 
     const chatRoom = db.collection(currentRoom)
-<<<<<<< Updated upstream
     const customQuery = chatRoom.orderBy("createdAt").limitToLast(25)
-=======
-    const customQuery = chatRoom.orderBy('createdAt').limit(75)
->>>>>>> Stashed changes
     const [room] = useCollectionData(customQuery, {idField:'id'})
 
     const sendMessage = async(e) => {
