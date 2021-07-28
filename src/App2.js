@@ -3,6 +3,7 @@ import './app2.css'
 
 import firebase, {db,auth} from './services/firebase'
 import {useCollectionData} from 'react-firebase-hooks/firestore'
+import { TwitterTimelineEmbed} from 'react-twitter-embed'
 
 //swithed to using classes because we want to be able to use states within our app.
 //props are data in components that dont change, states are data that do change.
@@ -127,6 +128,10 @@ function ChatRoom(props) {
 
     const [formValue, setFormValue] = useState('')
     const [currentRoom, setcurrentRoom] = useState('messages')
+    const [currentPriceBTC, setcurrentPriceBTC] = useState('null')
+    const [currentPriceETH, setcurrentPriceETH] = useState('null')
+    const [currentPriceDOGE, setcurrentPriceDOGE] = useState('null')
+
 
     const chatRoom = db.collection(currentRoom)
     const customQuery = chatRoom.orderBy("createdAt").limitToLast(25)
@@ -152,6 +157,29 @@ function ChatRoom(props) {
     }
 
     console.log(currentRoom)
+
+    let price  = require('crypto-price')
+    price.getCryptoPrice('USD', "BTC").then(obj => {
+        console.log(obj.price)
+        setcurrentPriceBTC(obj.price)
+    }).catch(err => {
+        console.log(err)
+    })
+
+    price.getCryptoPrice('USD', "ETH").then(obj => {
+        console.log(obj.price)
+        setcurrentPriceETH(obj.price)
+    }).catch(err => {
+        console.log(err)
+    })
+
+    price.getCryptoPrice('USD', "DOGE").then(obj => {
+        console.log(obj.price)
+        setcurrentPriceDOGE(obj.price)
+    }).catch(err => {
+        console.log(err)
+    })
+
     return (
     <div className="chat-room ">
         <div className='room-dropdown'>
@@ -173,12 +201,27 @@ function ChatRoom(props) {
             <button type="submit" className='message-send'>Send</button>
         </form>
       </div>
+
       <div className='info-area'>
+        <div className='price-card'>
+            <p style={{color: "white"}}>BTC ${currentPriceBTC}</p>
+            <p style={{color: "white"}}>ETH ${currentPriceETH}</p>
+            <p style={{color: "white"}}>DOGE ${currentPriceDOGE}</p>
+
+
+        </div>
+
         <div className='info-card'>
             <p style={{color: "white"}}>Current UID: {props.uid}</p>
             <p style={{color: "white"}}>Authenticated with: {props.authprovider}</p>
             <p style={{color: "white"}}>Current Room: {currentRoom}</p>
+
         </div>
+      </div>
+      <div className='socials-area'>
+          <div className='social-card'>
+            <TwitterTimelineEmbed sourceType="profile" screenName="cryptonews" theme="dark" options={{height: 580, width:460}} transparent/>
+          </div>
       </div>
     </div>
     )

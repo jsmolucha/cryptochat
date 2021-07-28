@@ -168,16 +168,21 @@ body {
     grid-area: infoarea ;
 }
 
+.socials-area {
+    grid-area: socials;
+    
+}
+
 .chat-room {
     display: grid;
     width: 100%;
     height: 100%;
     grid-template-areas: 
-    "dropdown infoarea"
-    "chat infoarea"
-    "signout infoarea";
+    "dropdown infoarea socials"
+    "chat infoarea socials"
+    "signout infoarea socials";
     grid-template-rows: auto;
-    grid-template-columns: 1fr 3fr;
+    grid-template-columns:auto 1fr 1fr;
 
 }
 
@@ -207,11 +212,35 @@ body {
     margin-top: 10px;
     background-color: #242C37;
     border-radius: 10px;
-    width: 30%;
-    height: 20%;
+    width: 80%;
+    height: 27%;
     text-align: center;
+    margin-left: auto;
+    margin-right: auto;
 }
 
+.price-card {
+    margin-top: 10px;
+    background-color: #242C37;
+    border-radius: 10px;
+    width: 80%;
+    height: 70%;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.social-card {
+    margin-top: 10px;
+    background-color: #242C37;
+    border-radius: 10px;
+    width: 80%;
+    height: 75%;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+
+}
 @media screen and (max-height: 1000px) {
     .chat-feed {
         height: 75vh;
