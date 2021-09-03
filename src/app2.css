@@ -230,6 +230,37 @@ body {
     margin-right: auto;
 }
 
+.bitcoin-price, .eth-price, .doge-price {
+    padding: 20px 0 20px 0;
+    background-color: rgba(93, 114, 144, 0.5);
+    border-radius: 10px;
+    margin: 0 2% 0 2%;
+    font-family: 'Inter';
+    font-size: 28px;
+}
+
+.bitcoin-price {
+    background-color: rgba(242,169,0);
+
+}
+
+.eth-price {
+    margin-top: 5%;
+    background-color: #9287d1;
+
+}
+
+.doge-price {
+    margin-top: 5%;
+    background-color: #c99d66;
+}
+
+.time-refresh {
+    color: rgba(93, 114, 144, 0.5);
+    font-family: 'Inter';
+    font-size: 10px;
+    margin-top:5%;
+}
 .social-card {
     margin-top: 10px;
     background-color: #242C37;

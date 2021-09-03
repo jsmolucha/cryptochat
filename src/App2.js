@@ -3,8 +3,8 @@ import './app2.css'
 
 import firebase, {db,auth} from './services/firebase'
 import {useCollectionData} from 'react-firebase-hooks/firestore'
-import { TwitterTimelineEmbed} from 'react-twitter-embed'
-
+import { TwitterTimelineEmbed } from 'react-twitter-embed';
+import {names} from './services/animals'
 //swithed to using classes because we want to be able to use states within our app.
 //props are data in components that dont change, states are data that do change.
 
@@ -23,7 +23,8 @@ class App2 extends React.Component {
                         displayName: user.displayName,
                         uid: user.uid,
                         color: randUserColor(),
-                        authprovider: user.providerData[0].providerId
+                        authprovider: user.providerData[0].providerId,
+                        anonName: randUserName()
 
                     }
                 })
@@ -32,7 +33,7 @@ class App2 extends React.Component {
             }
         })
     }
-
+    
     signInUserGit = () => {
         const provider2 = new firebase.auth.GithubAuthProvider();
         auth.signInWithPopup(provider2)
@@ -79,6 +80,8 @@ class App2 extends React.Component {
         auth.signOut()
 
     }
+
+   
 
 // reformat structure to have just the homepage and then the dynamically rendered page where if the user is logged in it renders chatrrom
 // and if theyre note logged in it renders the login page. Along with that, the signout button should be dynamic as well. 
@@ -132,10 +135,11 @@ function ChatRoom(props) {
     const [currentPriceETH, setcurrentPriceETH] = useState('null')
     const [currentPriceDOGE, setcurrentPriceDOGE] = useState('null')
 
-
     const chatRoom = db.collection(currentRoom)
     const customQuery = chatRoom.orderBy("createdAt").limitToLast(25)
     const [room] = useCollectionData(customQuery, {idField:'id'})
+
+    const timeRefresh = Date().toString()
 
     const sendMessage = async(e) => {
       e.preventDefault();
@@ -204,11 +208,10 @@ function ChatRoom(props) {
 
       <div className='info-area'>
         <div className='price-card'>
-            <p style={{color: "white"}}>BTC ${currentPriceBTC}</p>
-            <p style={{color: "white"}}>ETH ${currentPriceETH}</p>
-            <p style={{color: "white"}}>DOGE ${currentPriceDOGE}</p>
-
-
+            <p style={{color: "white"}} className='bitcoin-price'>BTC ${currentPriceBTC}</p>
+            <p style={{color: "white"}} className='eth-price'>ETH ${currentPriceETH}</p>
+            <p style={{color: "white"}} className='doge-price'>DOGE ${currentPriceDOGE}</p>
+            <p className='time-refresh'>Last refreshed {timeRefresh}</p>
         </div>
 
         <div className='info-card'>
@@ -220,13 +223,21 @@ function ChatRoom(props) {
       </div>
       <div className='socials-area'>
           <div className='social-card'>
-            <TwitterTimelineEmbed sourceType="profile" screenName="cryptonews" theme="dark" options={{height: 580, width:460}} transparent/>
+            <TwitterTimelineEmbed sourceType="profile" screenName="CryptolandNews" theme="dark" options={{height: 485}} transparent/>
+            
           </div>
       </div>
-    </div>
+    </div>    
     )
   }
+function randUserName() {
+        const list = names;
+        var anon = "Anonymous"
+        var animal = list[Math.floor(Math.random() * list.length)];
+        var anonName = anon + " " + animal
+        return anonName;
 
+}
 function randUserColor() {
     //this function will set the users color to random to differentiate chats
     //progress: currently makes a random color for every single message. We want this on a user to user basis.
@@ -241,14 +252,13 @@ function randUserColor() {
 function ChatMessage(props) {
     const {text, uid} = props.message;  
     const [colorValue] = useState(randUserColor());
-    
+    const [nameVal] = useState(randUserName());
     //checks to see if the message was sent or recieved from the user
     const messageClass = uid === auth.currentUser.uid ? 'sent' : 'recieved'
 
-    
     return(
         <div className={`message${messageClass}`} >
-            <p className="chat-name" style={{color:colorValue}}>{uid}</p>
+            <p className="chat-name" style={{color:colorValue}}>{nameVal}</p>
             <p style={{color: "rgba(255,255,255)"}}>: {text}</p>
         </div>
     )
