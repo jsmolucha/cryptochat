@@ -26,6 +26,7 @@ All back end is managed via Google Firebase using a real time database to fetch 
 
 | Progress            | Goal                                                                    |
 | --------------------| ------------------------------------------------------------------------|
+| :rocket:            | Deploy the live site on AWS and announce the pre-alpha deployment       |
 | :white_check_mark:  | Provide a visually and funtionallity friends UI for users               |
 | :white_check_mark:  | Allow for login using Google, GitHub, and Facebook for ease of login    |
 | :warning:           | Alias for user should be different every time to preserve anonymity     |
