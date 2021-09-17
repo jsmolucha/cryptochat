@@ -22,6 +22,7 @@ This is the current file structure of the project.
 All back end is managed via Google Firebase using a real time database to fetch and create the chats that users send. Using a NoSQL backend solution its much easier to manage a **live** chat without the need for an API. This overall makes the webpage much more responsive and as light weight as possible. 
 
 ## Project Goals & Progress
+<center>
 
 | Progress            | Goal                                                                    |
 | --------------------| ------------------------------------------------------------------------|
@@ -29,4 +30,5 @@ All back end is managed via Google Firebase using a real time database to fetch 
 | :white_check_mark:  | Allow for login using Google, GitHub, and Facebook for ease of login    |
 | :warning:           | Alias for user should be different every time to preserve anonymity     |
 | :white_check_mark:  | Chat should differentiate every message and they should be easy to read |
-
+  
+</center>
