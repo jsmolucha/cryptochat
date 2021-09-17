@@ -23,21 +23,10 @@ All back end is managed via Google Firebase using a real time database to fetch 
 
 ## Project Goals & Progress
 
-<p align="center">
-    Complete: :heavy_check_mark: </Br>
-    Work in progress: :warning: </Br>
-    Not complete: :x:
-</p>
-
-* Provide a visually and funtionallity friends UI for users 
-* Allow for login using Google, GitHub, and Facebook for ease of login
-* Alias for user should be different every time to preserve anonymity
-* Chat should differentiate every message and they should be easy to read
-
 | Progress            | Goal                                                                    |
 | --------------------| ------------------------------------------------------------------------|
-| :heavy_check_mark:  | Provide a visually and funtionallity friends UI for users               |
-| :heavy_check_mark:  | Allow for login using Google, GitHub, and Facebook for ease of login    |
+| :white_check_mark:  | Provide a visually and funtionallity friends UI for users               |
+| :white_check_mark:  | Allow for login using Google, GitHub, and Facebook for ease of login    |
 | :warning:           | Alias for user should be different every time to preserve anonymity     |
-| :heavy_check_mark:  | Chat should differentiate every message and they should be easy to read |
+| :white_check_mark:  | Chat should differentiate every message and they should be easy to read |
 
