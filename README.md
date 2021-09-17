@@ -33,3 +33,8 @@ All back end is managed via Google Firebase using a real time database to fetch 
 * Allow for login using Google, GitHub, and Facebook for ease of login
 * Alias for user should be different every time to preserve anonymity
 * Chat should differentiate every message and they should be easy to read
+
+| First Header  | Second Header |
+| ------------- | ------------- |
+| Content Cell  | Content Cell  |
+| Content Cell  | Content Cell  |
