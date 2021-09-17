@@ -34,7 +34,10 @@ All back end is managed via Google Firebase using a real time database to fetch 
 * Alias for user should be different every time to preserve anonymity
 * Chat should differentiate every message and they should be easy to read
 
-| First Header  | Second Header |
-| ------------- | ------------- |
-| Content Cell  | Content Cell  |
-| Content Cell  | Content Cell  |
+| Progress            | Goal                                                                    |
+| --------------------| ------------------------------------------------------------------------|
+| :heavy_check_mark:  | Provide a visually and funtionallity friends UI for users               |
+| :heavy_check_mark:  | Allow for login using Google, GitHub, and Facebook for ease of login    |
+| :warning:           | Alias for user should be different every time to preserve anonymity     |
+| :heavy_check_mark:  | Chat should differentiate every message and they should be easy to read |
+
