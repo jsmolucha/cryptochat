@@ -28,10 +28,26 @@ class App2 extends React.Component {
 
                     }
                 })
+
+                /* var docRef = db.collection("users").doc(user.uid)
+
+                docRef.get().then((doc) => {
+                    if (doc.exists) {
+                        console.log("document data:", doc.data().chatColor)
+                       
+                    } else {
+                        console.log("no such document")
+                    }
+                }).catch((error) => {
+                        console.log("error getting document")
+                }); */
+
+                //possibly put the function here
             } else {
                 this.setState({user:null})
             }
         })
+
     }
     
     signInUserGit = () => {
@@ -52,7 +68,6 @@ class App2 extends React.Component {
         }).catch(function(error){
             console.log(error)
         })
-
     }
 
     signInUserGoogle = () => {  
@@ -122,6 +137,11 @@ function LogIn(props) {
     )
 }
 
+// fetch user id -> send to seperate cloud sheet -> sheet include uid and color of the chat name that they want-> upon sign in: 
+// throw the color into the state, apply the color into the chatroom based on the state, update the page
+// this should be on a compnennt mounted basis so until the color is fetched from the the DB, do not load the element. Also fetch the user
+// a name. 
+
 function ChatRoom(props) {
     const dummy = useRef()
 /* 
@@ -187,7 +207,7 @@ function ChatRoom(props) {
     return (
     <div className="chat-room ">
         <div className='room-dropdown'>
-            <label for="rooms"></label>
+            <label htmlFor="rooms"></label>
                 <select name="rooms" value={currentRoom} onChange={(e) => setcurrentRoom(e.target.value)} className="drop-down-menu">
                     <option value="messages">General</option>
                     <option value="bitcoin">BTC</option>
@@ -230,6 +250,7 @@ function ChatRoom(props) {
     </div>    
     )
   }
+
 function randUserName() {
         const list = names;
         var anon = "Anonymous"
@@ -238,6 +259,7 @@ function randUserName() {
         return anonName;
 
 }
+
 function randUserColor() {
     //this function will set the users color to random to differentiate chats
     //progress: currently makes a random color for every single message. We want this on a user to user basis.

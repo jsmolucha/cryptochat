@@ -4,7 +4,7 @@ import 'firebase/firestore'
 
 if (firebase.apps.length === 0) {
     firebase.initializeApp({
-      apiKey: "AIzaSyBp7N9DwpxrtuUIpLT8VqujGdUiiDocbw0",
+      apiKey: process.env.REACT_APP_API_KEY,
       authDomain: "cryptochat-913b6.firebaseapp.com",
       projectId: "cryptochat-913b6",
       storageBucket: "cryptochat-913b6.appspot.com",
